@@ -4,12 +4,16 @@ import { LeadProvider } from './context/LeadContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
-import { LogOut, User, LayoutDashboard, Settings } from 'lucide-react';
+import LeadManager from './components/LeadManager';
+import { LogOut, User, LayoutDashboard, Briefcase, Settings } from 'lucide-react';
+
 
 
 function CRMApp() {
   const { user, loading, logout } = useAuth();
   const [currentView, setCurrentView] = useState('login'); // 'login' | 'register'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'leads'
+
 
   // Loading Screen
   if (loading) {
@@ -43,10 +47,28 @@ function CRMApp() {
         </div>
 
         {/* Sidebar Links */}
-        <nav className="flex-1 p-4 space-y-2">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-violet-600/10 text-violet-400 border border-violet-500/20 text-sm font-semibold transition-all">
+        <nav className="flex-1 p-4 space-y-1.5">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold border transition-all duration-200 ${
+              activeTab === 'dashboard'
+                ? 'bg-violet-600/10 text-violet-400 border-violet-500/20'
+                : 'text-slate-400 border-transparent hover:text-white hover:bg-slate-800/30'
+            }`}
+          >
             <LayoutDashboard size={18} />
             Dashboard
+          </button>
+          <button
+            onClick={() => setActiveTab('leads')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold border transition-all duration-200 ${
+              activeTab === 'leads'
+                ? 'bg-violet-600/10 text-violet-400 border-violet-500/20'
+                : 'text-slate-400 border-transparent hover:text-white hover:bg-slate-800/30'
+            }`}
+          >
+            <Briefcase size={18} />
+            Leads
           </button>
         </nav>
 
@@ -78,8 +100,14 @@ function CRMApp() {
         {/* Top Header */}
         <header className="flex justify-between items-center mb-8 relative z-10">
           <div>
-            <h2 className="text-2xl font-bold text-white">Sales Dashboard</h2>
-            <p className="text-slate-400 text-sm mt-1">Workspace analytics and sales status</p>
+            <h2 className="text-2xl font-bold text-white">
+              {activeTab === 'dashboard' ? 'Sales Dashboard' : 'Leads Management'}
+            </h2>
+            <p className="text-slate-400 text-sm mt-1">
+              {activeTab === 'dashboard'
+                ? 'Workspace analytics and sales status'
+                : 'Track and manage sales pipeline prospects'}
+            </p>
           </div>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -87,9 +115,9 @@ function CRMApp() {
           </div>
         </header>
 
-        {/* Dashboard Analytics View */}
+        {/* Workspace Dynamic Content */}
         <div className="relative z-10">
-          <Dashboard />
+          {activeTab === 'dashboard' ? <Dashboard /> : <LeadManager />}
         </div>
       </main>
     </div>
