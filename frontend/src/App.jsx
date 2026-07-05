@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { LeadProvider } from './context/LeadContext';
 import Login from './components/Login';
 import Register from './components/Register';
+import Dashboard from './components/Dashboard';
 import { LogOut, User, LayoutDashboard, Settings } from 'lucide-react';
+
 
 function CRMApp() {
   const { user, loading, logout } = useAuth();
@@ -84,15 +87,10 @@ function CRMApp() {
           </div>
         </header>
 
-        {/* Placeholder Content (To be updated in Phase 5 & 6) */}
-        <section className="flex-1 border border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center p-8 bg-slate-900/10 relative z-10">
-          <div className="max-w-md text-center">
-            <h3 className="text-lg font-bold text-white mb-2">Welcome to your dashboard!</h3>
-            <p className="text-slate-500 text-sm mb-6">
-              Authentication is successfully configured. In the next phase, we will display metrics and lead management tools here.
-            </p>
-          </div>
-        </section>
+        {/* Dashboard Analytics View */}
+        <div className="relative z-10">
+          <Dashboard />
+        </div>
       </main>
     </div>
   );
@@ -101,7 +99,9 @@ function CRMApp() {
 export default function App() {
   return (
     <AuthProvider>
-      <CRMApp />
+      <LeadProvider>
+        <CRMApp />
+      </LeadProvider>
     </AuthProvider>
   );
 }
