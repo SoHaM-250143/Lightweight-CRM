@@ -25,6 +25,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Lightweight CRM API' });
 });
 
+// Mount Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
